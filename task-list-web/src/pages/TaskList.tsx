@@ -1,51 +1,42 @@
 import { Button } from 'primereact/button';
+import { Checkbox } from 'primereact/checkbox';
 import { Column } from 'primereact/column';
 import { DataTable } from 'primereact/datatable';
 import { Dropdown } from 'primereact/dropdown';
 import { InputText } from 'primereact/inputtext';
 import { SelectItemOptionsType } from 'primereact/selectitem';
 import React, { useEffect, useState } from 'react';
-import {
-  Link
-} from "react-router-dom";
-import CreateTaskList from '../components/CreateTaskList';
-import { TaskList, loadTask } from '../service/task-lists-service';
-const Home: React.FC = () => {
-  const [selectedFilter, setSelectedFilter] = useState(undefined)
-  const [showSaveDialog, setShowSaveDialog ] = useState(false)
-  const [taskLits, setTaskLits] = useState<TaskList[]>([])
+import { useParams } from 'react-router-dom';
+import CreateTaskItem from '../components/CreateTaskItem';
+import { TaskItem, loadTaskItem } from '../service/task-item-service';
 
+
+
+const TaskList: React.FC = () => {
+  const [selectedFilter, setSelectedFilter] = useState(undefined)
+  const [taskItems, setTaskItems] = useState<TaskItem[]>()
+  const [showSaveDialog, setShowSaveDialog ] = useState(false)
+
+  let { id } = useParams();
   const seachOptions: SelectItemOptionsType = [
     {value: 'title', label: "Titulo" , title: "Titulo"}
   ] 
 
-
-
   useEffect(() => {
     loadData()
-  }, []) 
+  }, [])
 
-
-  const loadData = () => {
-    loadTask().then( response => {  
-      setTaskLits(response.data.content)
-    })
+  function loadData() {
+    if (id) {
+      loadTaskItem(Number.parseInt(id)).then(response => {
+        setTaskItems(response.data.content)
+      })
+    }
   }
 
   const onHide = () => {
     setShowSaveDialog(!showSaveDialog)
     loadData()
-  }
-
-  const actionButtons = (data: any) => {
-    return (
-      <div className='flex gap-2'>
-        <Link to={`/task-list/${data.id}`}>
-          <Button icon="pi pi-eye" size="small" severity="info"/>
-        </Link>
-        <Button icon="pi pi-trash" size="small" severity="danger"/>
-      </div>
-    )
   }
 
   return (
@@ -69,10 +60,14 @@ const Home: React.FC = () => {
         </div>
       </form>
 
-      <DataTable emptyMessage="Nenhuma lista encontrada" value={taskLits} tableStyle={{ minWidth: '50rem' }} paginator rows={5}>
-        <Column field="id" header="Id" className='w-2' />
+      <DataTable emptyMessage="Nenhuma lista encontrada"
+        value={taskItems} tableStyle={{ minWidth: '50rem' }}
+          paginator rows={5}>
+        <Column  field="id" header="Id" className='w-2' />
         <Column field="title" header="Title" />
-        <Column header="Acões" body={actionButtons} className='w-1'/>
+        <Column field="description" header="Descrição" />
+        <Column field="isActive" header="Ativado" body={(data) => (<Checkbox checked={data.isActive} />) } />
+        <Column field="isPriority" header="Prioridade" body={ (data) => (<Checkbox checked={data.isPriority} />) }/>
       </DataTable>
 
       <div className='mt-2'>
@@ -80,10 +75,10 @@ const Home: React.FC = () => {
           setShowSaveDialog(true)
         }}>Cadastrar</Button>
       </div>
-      {showSaveDialog && <CreateTaskList visible={showSaveDialog}
+      {showSaveDialog && <CreateTaskItem taskListId={Number.parseInt(id!)} visible={showSaveDialog}
         onHide={onHide}/>}
     </div>
   );
 }
 
-export default Home;
+export default TaskList;

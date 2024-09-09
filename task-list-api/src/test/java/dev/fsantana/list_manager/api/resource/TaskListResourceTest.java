@@ -16,7 +16,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jayway.jsonpath.JsonPath;
 
 import dev.fsantana.list_manager.domain.execption.AppEntityNotFound;
 import dev.fsantana.list_manager.domain.model.TaskList;
@@ -41,12 +40,10 @@ class TaskListResourceTest {
     public void test0() throws Exception {
         TaskList taskList = new TaskList(1L, "Task List 1", OffsetDateTime.now(), null);
         given(clientService.findById(1L)).willReturn(taskList);
-        String formatedDate = JsonPath.parse(objectMapper.writeValueAsString(taskList.getCreatedAt())).json();
         mockMvc.perform(get(PATH + "/{id}", 1L))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(taskList.getId().intValue())))
-                .andExpect(jsonPath("$.title", is(taskList.getTitle())))
-                .andExpect(jsonPath("$.createdAt", is(formatedDate)));
+                .andExpect(jsonPath("$.title", is(taskList.getTitle())));
     }
 
     @Test

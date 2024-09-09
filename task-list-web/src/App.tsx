@@ -1,9 +1,9 @@
-import Home from './pages/Home'
 import { PrimeReactProvider } from 'primereact/api';
+import AppRouter from './router/app.router';
 function App() {
   return (
     <PrimeReactProvider>
-      <Home />
+      <AppRouter />
     </PrimeReactProvider>
   )
 }
