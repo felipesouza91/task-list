@@ -6,10 +6,15 @@ import dev.fsantana.list_manager.domain.model.TaskItem;
 import dev.fsantana.list_manager.domain.model.TaskList;
 import dev.fsantana.list_manager.domain.repository.TaskItemRepository;
 import dev.fsantana.list_manager.domain.repository.TaskListRepository;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
@@ -24,6 +29,7 @@ public class TaskListItemService {
 
     public Page<TaskItem> find(Long taskListId, Pageable page) {
         this.findTaskListById(taskListId);
+
          return this.taskItemRepository.findByTaskListId(taskListId, page);
     }
 
