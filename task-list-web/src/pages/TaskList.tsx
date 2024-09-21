@@ -6,7 +6,7 @@ import { Dropdown } from 'primereact/dropdown';
 import { InputText } from 'primereact/inputtext';
 import { SelectItemOptionsType } from 'primereact/selectitem';
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import CreateTaskItem from '../components/CreateTaskItem';
 import { TaskItem, loadTaskItem } from '../service/task-item-service';
 
@@ -70,10 +70,15 @@ const TaskList: React.FC = () => {
         <Column field="isPriority" header="Prioridade" body={ (data) => (<Checkbox checked={data.isPriority} />) }/>
       </DataTable>
 
-      <div className='mt-2'>
-        <Button onClick={() => {
-          setShowSaveDialog(true)
-        }}>Cadastrar</Button>
+      <div className='mt-2 grid md:gap-3 '>
+        <div className='col-12 md:col-1'>
+          <Button onClick={() => { setShowSaveDialog(true)}} className='w-full flex justify-content-center'>Cadastrar</Button>
+        </div>
+        <div className='col-12 md:col-1 '>
+          <Link to="/">
+            <Button className='w-full flex justify-content-center'>Voltar</Button>
+          </Link>
+        </div>
       </div>
       {showSaveDialog && <CreateTaskItem taskListId={Number.parseInt(id!)} visible={showSaveDialog}
         onHide={onHide}/>}

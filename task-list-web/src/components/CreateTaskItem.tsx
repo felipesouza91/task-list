@@ -36,7 +36,8 @@ const CreateTaskItem: React.FC<CreateTaskItemProps> = ({ taskListId,  visible = 
             onClose()
             setErrorMessage("")
         }).catch(error => {
-            if (error.response.status === 400){
+            console.log(error)
+            if (error.statusCode === 400){
             setErrorMessage(error.response.data.detail)}
         })
     }
@@ -52,9 +53,9 @@ const CreateTaskItem: React.FC<CreateTaskItemProps> = ({ taskListId,  visible = 
   return (
     <Dialog header="Cadastrar uma Listas" visible={isVisible}
           onHide={onClose}>
-          {errorMessage && <Message severity="warn" text={errorMessage} className='w-full mb-3'/>}
 
           <form className='formgrid grid w-full' onSubmit={save}>
+            {errorMessage && <Message severity="warn" text={errorMessage} className='w-full mb-3'/>}
             <div className='field col-12'>
                 <label >Titulo</label>
                 <InputText className='w-full'  onChange={(e) => setTitle(e.target.value)}/>

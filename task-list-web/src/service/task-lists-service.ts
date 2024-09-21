@@ -1,5 +1,9 @@
 import { api } from "../utils/api";
 
+type SearchData = {
+    title?: string
+}
+
 type Pageable = {
     content: TaskList[]
 }
@@ -13,9 +17,14 @@ async function saveTaskList(title: string ) {
    return  await api.post("/task-lists",{ title: title })
 }
 
-async function loadTask() {
-    return await api.get<Pageable>("/task-lists")
+async function loadTask({title}: SearchData) {
+    return await api.get<Pageable>("/task-lists", {
+        params: {
+            title
+        },
+        
+    })
 }
 
 
-export { saveTaskList , loadTask }
+export { loadTask, saveTaskList };

@@ -1,3 +1,4 @@
+import { yupResolver } from '@hookform/resolvers/yup';
 import { Button } from 'primereact/button';
 import { Column } from 'primereact/column';
 import { DataTable } from 'primereact/datatable';
@@ -5,21 +6,42 @@ import { Dropdown } from 'primereact/dropdown';
 import { InputText } from 'primereact/inputtext';
 import { SelectItemOptionsType } from 'primereact/selectitem';
 import React, { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
 import {
   Link
 } from "react-router-dom";
+import * as yup from 'yup';
 import CreateTaskList from '../components/CreateTaskList';
 import { TaskList, loadTask } from '../service/task-lists-service';
+
+const shema = yup.object({
+  data: yup.string()
+})
+
+type SearchFormInput = yup.InferType<typeof shema>
+
 const Home: React.FC = () => {
   const [selectedFilter, setSelectedFilter] = useState(undefined)
   const [showSaveDialog, setShowSaveDialog ] = useState(false)
   const [taskLits, setTaskLits] = useState<TaskList[]>([])
 
-  const seachOptions: SelectItemOptionsType = [
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm<SearchFormInput>({
+        resolver: yupResolver(shema)
+      })
+
+  const searchOptions: SelectItemOptionsType = [
     {value: 'title', label: "Titulo" , title: "Titulo"}
   ] 
 
-
+  async function search({data}: SearchFormInput) {
+    loadTask({title: data}).then( response => {  
+      setTaskLits(response.data.content)
+    })
+  }
 
   useEffect(() => {
     loadData()
@@ -27,7 +49,7 @@ const Home: React.FC = () => {
 
 
   const loadData = () => {
-    loadTask().then( response => {  
+    loadTask({}).then( response => {  
       setTaskLits(response.data.content)
     })
   }
@@ -50,19 +72,20 @@ const Home: React.FC = () => {
 
   return (
     <div className='w-10 mx-auto flex gap-3 flex-column'>
-      <form className='formgrid grid'>
-        <div className='field col-4'>
+      <form className='formgrid grid' onSubmit={handleSubmit(search)}>
+        <div className='field col-12 md:col-4'>
           <label>Filtro</label>
           <Dropdown 
             value={selectedFilter}
-            options={seachOptions}
+            options={searchOptions}
             onChange={(e) => setSelectedFilter(e.value)}
             placeholder="Selecione um filtro"
-            className='w-full'/>
+            className='w-full'
+          />
         </div>
         {selectedFilter && <div className='field col'>
           <label>Filtro</label>
-          <InputText className='w-full'/>
+          <InputText className='w-full' {...register('data')} />
         </div>}
         <div className='col-12'>
           <Button>Pesquisar</Button>
@@ -75,10 +98,11 @@ const Home: React.FC = () => {
         <Column header="Acões" body={actionButtons} className='w-1'/>
       </DataTable>
 
-      <div className='mt-2'>
+      <div className='mt-2 grid col-12 md:col-2 '>
+
         <Button onClick={() => {
           setShowSaveDialog(true)
-        }}>Cadastrar</Button>
+        }} className='w-full flex justify-content-center'>Cadastrar</Button>
       </div>
       {showSaveDialog && <CreateTaskList visible={showSaveDialog}
         onHide={onHide}/>}
