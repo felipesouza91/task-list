@@ -179,6 +179,22 @@ public class TaskListItemResourceIT {
     }
 
     @Test
+    @DisplayName("should return 400 when post title already exits")
+    public void test17() {
+        TaskList taskList = taskListRepository.saveAndFlush(new TaskList("Task 0"));
+        TaskItem taskitem = taskItemRepository.save(new TaskItem(null, "Item 1", "Item example", true, false, OffsetDateTime.now(), taskList));
+        given().body(InputTaskItem.builder().title("Item 1").build())
+                .contentType(ContentType.JSON)
+                .when()
+                .post("/{taskId}/items",  taskList.getId())
+                .then()
+                .statusCode(400)
+                .body("detail", is("Já existe uma tarefa com esse titulo cadastrado"))
+                .body("title", is("Violação Regra de Negocio"))
+                .log().all();
+    }
+
+    @Test
     @DisplayName("should return 400 when post and validation fails")
     public void test10() {
         TaskList taskList = taskListRepository.saveAndFlush(new TaskList("Task 0"));
@@ -195,7 +211,7 @@ public class TaskListItemResourceIT {
 
 
     @Test
-    @DisplayName("should return 200 when post task item success")
+    @DisplayName("should return 201 when post task item success")
     public void test12() {
         TaskList taskList = taskListRepository.saveAndFlush(new TaskList("Task 0"));
         given().body(InputTaskItem.builder().title("Item 1 - new").description("Description").build())
@@ -263,10 +279,13 @@ public class TaskListItemResourceIT {
     public void test16() {
         TaskList taskList = taskListRepository.saveAndFlush(new TaskList("Task 0"));
         TaskItem tasktem = taskItemRepository.save(new TaskItem(null, "Item 1", "Item example", true, false, OffsetDateTime.now(), taskList));
+        TaskItem tasktem2 = taskItemRepository.save(new TaskItem(null, "Item 2", "Item example", false, true, OffsetDateTime.now(), taskList));
 
         when().get("/{taskId}/items", taskList.getId())
                 .then()
                 .statusCode(200)
-                .body("totalElements", is(1)).log().all();
+                .body("totalElements", is(2))
+                .body("content[0].isPriority", is(true))
+                .log().all();
     }
 }

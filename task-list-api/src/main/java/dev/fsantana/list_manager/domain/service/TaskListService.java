@@ -27,7 +27,7 @@ public class TaskListService {
         if (!StringUtils.hasText(title)) {
             title = "";
         }
-        return this.taskListRepository.findByTitleContaining(title, pageable);
+        return this.taskListRepository.findByTitleIgnoreCaseContaining(title, pageable);
     }
 
     public TaskList save(TaskList taskList) {

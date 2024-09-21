@@ -22,7 +22,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/task-lists")
 @AllArgsConstructor
-public class TaskListResource implements TaskListResourceDocs{
+public class TaskListResource implements TaskListResourceDocs {
 
     private final TaskListService service;
 

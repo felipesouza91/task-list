@@ -47,6 +47,18 @@ public class TaskListControllerIT {
     }
 
     @Test
+    @DisplayName("should return status code 200 with  values")
+    public void test14() {
+        repository.saveAndFlush(new TaskList("Felipe"));
+        repository.saveAndFlush(new TaskList("Teste 2"));
+        given().queryParam("title", "teste 2").when().get()
+                .then()
+                .statusCode(200)
+                .body("totalElements", is(1))
+            .log().all();
+    }
+
+    @Test
     @DisplayName("should return status 200 when find by id")
     public void test1() throws JsonProcessingException {
         TaskList taskList = repository.saveAndFlush(new TaskList("Felipe"));

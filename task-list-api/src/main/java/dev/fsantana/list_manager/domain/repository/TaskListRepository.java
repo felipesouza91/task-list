@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface TaskListRepository extends JpaRepository<TaskList, Long> {
 
-    Page<TaskList> findByTitleContaining(String title, Pageable page);
+    Page<TaskList> findByTitleIgnoreCaseContaining(String title, Pageable page);
 
     Optional<TaskList> findByTitleIgnoreCase(String title);
 }

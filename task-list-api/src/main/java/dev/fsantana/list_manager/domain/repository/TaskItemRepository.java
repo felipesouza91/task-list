@@ -6,8 +6,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
+import java.util.Optional;
+
 public interface TaskItemRepository extends JpaRepository<TaskItem, Long>, JpaSpecificationExecutor<TaskItem> {
 
-    Page<TaskItem> findByTaskListId(Long taskListId, Pageable page);
+    Page<TaskItem> findByTaskListIdOrderByIsPriorityDesc(Long taskListId, Pageable page);
 
+    Optional<TaskItem> findByTitleIgnoreCase(String title);
 }

@@ -30,7 +30,7 @@ public class TaskListItemService {
     public Page<TaskItem> find(Long taskListId, Pageable page) {
         this.findTaskListById(taskListId);
 
-         return this.taskItemRepository.findByTaskListId(taskListId, page);
+         return this.taskItemRepository.findByTaskListIdOrderByIsPriorityDesc(taskListId, page);
     }
 
     public TaskItem findById(Long taskListId, Long id) {
@@ -41,6 +41,11 @@ public class TaskListItemService {
     public TaskItem save(Long taskListId, TaskItem taskItem) {
         TaskList taskList = findTaskListById(taskListId);
         taskItem.setTaskList(taskList);
+        Optional<TaskItem> byTitleIgnoreCase = this.taskItemRepository.findByTitleIgnoreCase(taskItem.getTitle());
+        if(byTitleIgnoreCase.isPresent()) {
+            throw new  AppRuleException("Já existe uma tarefa com esse titulo cadastrado");
+        }
+
         return this.taskItemRepository.save(taskItem);
     }
 
