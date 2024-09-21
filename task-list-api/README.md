@@ -1,8 +1,12 @@
 # Gerenciador de Tarefas
 
-![GitHub forks](https://img.shields.io/github/forks/iuricode/README-template?style=for-the-badge)
-![Bitbucket open issues](https://img.shields.io/bitbucket/issues/iuricode/README-template?style=for-the-badge)
-![Bitbucket open pull requests](https://img.shields.io/bitbucket/pr-raw/iuricode/README-template?style=for-the-badge)
+![Github open issues](https://img.shields.io/github/issues/felipesouza91/task-list?style=for-the-badge)
+![GitHub Licence](https://img.shields.io/github/license/felipesouza91/task-list?style=for-the-badge)
+![GitHub Licence](https://img.shields.io/github/languages/count/felipesouza91/task-list?style=for-the-badge)
+![GitHub Licence](https://img.shields.io/github/languages/top/felipesouza91/task-list?style=for-the-badge)
+![GitHub Licence](https://img.shields.io/github/checks-status/felipesouza91/task-list/main?style=for-the-badge)
+<!--![GitHub Licence](https://img.shields.io/github/actions/workflow/status/felipesouza91/task-list/:workflow?style=for-the-badge) -->
+
 
 ## Sobre o projeto
 
@@ -13,17 +17,17 @@
 O projeto ainda está em desenvolvimento e as próximas atualizações serão voltadas para as seguintes tarefas:
 
 - Requisitos funcionais
-    - [ ] O usuário deve poder criar e gerenciar listas, cada uma contendo itens associados
-    - [ ] Dentro de cada lista, o usuário deve poder adicionar, editar, remover e alterar o estado de itens.
-    - [ ] O usuário deve poder visualizar e organizar as listas  e itens de forma intuitiva, com opções de filtragem disponíveis.
-    - [ ]  O usuário pode destacar itens dentro das listas para indicar prioridade.
+    - [X] O usuário deve poder criar e gerenciar listas, cada uma contendo itens associados
+    - [X] Dentro de cada lista, o usuário deve poder adicionar, editar, remover e alterar o estado de itens.
+    - [X] O usuário deve poder visualizar e organizar as listas  e itens de forma intuitiva, com opções de filtragem disponíveis.
+    - [X] O usuário pode destacar itens dentro das listas para indicar prioridade.
 - Regras e Negócio
-  - [ ] Os itens dentro de uma lista devem seguir critérios básicos de validação, como comprimento mínimo do título.
-  - [ ] Cada item deve possuir um estado que pode ser alterado pelo usuário.
-  - [ ]  Itens destacados devem ser priorizados na visualização.
+  - [X] Os itens dentro de uma lista devem seguir critérios básicos de validação, como comprimento mínimo do título.
+  - [X] Cada item deve possuir um estado que pode ser alterado pelo usuário.
+  - [X] Itens destacados devem ser priorizados na visualização.
 - Requisitos Não Funcionais
-  - [ ] As listas e itens devem ser armazenados de forma persistente.
-  - [ ] A aplicação deve fornecer uma API para as operações principais.
+  - [X] As listas e itens devem ser armazenados de forma persistente.
+  - [X] A aplicação deve fornecer uma API para as operações principais.
   - [ ] Deve haver testes automatizados para as funcionalidades principais.
 
 ## 💻 Pré-requisitos
