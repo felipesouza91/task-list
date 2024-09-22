@@ -7,7 +7,6 @@ import { InputText } from 'primereact/inputtext';
 import { SelectItemOptionsType } from 'primereact/selectitem';
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import CreateTaskItem from '../components/CreateTaskItem';
 import { TaskItem, loadTaskItem } from '../service/task-item-service';
 
 
@@ -39,6 +38,16 @@ const TaskList: React.FC = () => {
     loadData()
   }
 
+  const actionButtons = (data: any) => {
+    return (
+      <div className='flex gap-2'>
+        <Button icon="pi pi-pencil" size="small" severity="info" onClick={() => setShowSaveDialog(!showSaveDialog)}/>
+        <Button icon="pi pi-trash" size="small" severity="danger"/>
+      </div>
+    )
+  }
+
+
   return (
     <div className='w-10 mx-auto flex gap-3 flex-column'>
       <form className='formgrid grid'>
@@ -60,14 +69,16 @@ const TaskList: React.FC = () => {
         </div>
       </form>
 
-      <DataTable emptyMessage="Nenhuma lista encontrada"
+      <DataTable emptyMessage="Nenhuma lista encontrada" 
         value={taskItems} tableStyle={{ minWidth: '50rem' }}
           paginator rows={5}>
-        <Column  field="id" header="Id" className='w-2' />
-        <Column field="title" header="Title" />
+        <Column  field="id" header="Id" className='w-2' sortable  />
+        <Column field="title" header="Title"  sortable />
         <Column field="description" header="Descrição" />
-        <Column field="isActive" header="Ativado" body={(data) => (<Checkbox checked={data.isActive} />) } />
-        <Column field="isPriority" header="Prioridade" body={ (data) => (<Checkbox checked={data.isPriority} />) }/>
+        <Column field="isActive" header="Ativado" sortable  body={(data) => (<Checkbox checked={data.isActive} />) } />
+        <Column field="isPriority" header="Prioridade" sortable  body={(data) => (<Checkbox checked={data.isPriority} />)} />
+        <Column header="Acões" body={actionButtons}  className='w-1'/>
+
       </DataTable>
 
       <div className='mt-2 grid md:gap-3 '>
@@ -80,8 +91,7 @@ const TaskList: React.FC = () => {
           </Link>
         </div>
       </div>
-      {showSaveDialog && <CreateTaskItem taskListId={Number.parseInt(id!)} visible={showSaveDialog}
-        onHide={onHide}/>}
+
     </div>
   );
 }
